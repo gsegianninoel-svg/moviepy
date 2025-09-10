@@ -1,3 +1,40 @@
+Durée des clips
+clips = [
+    {"text": "Bébé mais déjà une star ✨", "color": (255,223,186), "duration":7},
+    {"text": "L'ado en pleine crise 😂", "color": (186,255,201), "duration":8},
+    {"text": "Toujours prête à faire la fête 🍾", "color": (186,225,255), "duration":10},
+    {"text": "Happy 18 🎂🥂", "color": (255,186,255), "duration":10}
+]
+
+video_clips = []
+
+for clip in clips:
+    # Fond coloré (à remplacer par une image réelle si souhaité)
+    c = ColorClip(size=(720,1280), color=clip["color"], duration=clip["duration"])
+
+Zoom léger
+    c = c.resize(lambda t: 1 + 0.05*t/clip["duration"])
+
+Texte animé (fadein)
+    txt = TextClip(clip["text"], fontsize=60, color='black', font='Amiri-Bold')
+    txt = txt.set_position('center').set_duration(clip["duration"]).fadein(1)
+
+Composition
+    comp = CompositeVideoClip([c, txt])
+
+Transition fondu
+    comp = comp.fadein(1).fadeout(1)
+
+    video_clips.append(comp)
+
+Combiner les clips
+final_video = concatenate_videoclips(video_clips, method="compose")
+
+Ajouter musique (optionnel)
+audio = AudioFileClip("musique_libre.mp3").subclip(0, final_video.duration)
+final_video = final_video.set_audio(audio)
+Exporter la vidéo MP4 verticale TikTok
+final_video.write_videofile("mini_montage_18ans_dynamic.mp4", fps=24)
 .. _install:
 
 Installation
